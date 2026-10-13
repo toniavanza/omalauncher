@@ -130,11 +130,7 @@ internal fun Modifier.homeSwipe(
     val drawerShown by remember(state) { derivedStateOf { state.drawer.value > 0f } }
     // Whether the drawer shows is only read when it matters: read here, it would recompose all of home (its Box is
     // inline) each time the drawer opens or closes.
-    val drags =
-        when (runtime.gestures.swipeUp) {
-            GestureAction.Drawer -> true
-            GestureAction.None -> drawerShown
-        }
+    val drags = runtime.gestures.swipeUp == GestureAction.Drawer || drawerShown
     // One drag handler, only turned on or off: a new one mid-swipe (as the drawer starts to show) would drop the drag.
     return drawerSwipe(state, enabled && drags)
 }
